@@ -44,7 +44,7 @@ class HomeService extends BaseService {
     } catch (err) {
       // 异常后回滚
       await conn.rollback();
-      console.error(err);
+      console.error(`platform-> ${platform} position->${position}`,err);
     }
 
   }
@@ -83,7 +83,7 @@ class HomeService extends BaseService {
     } catch (err) {
       // 异常后回滚
       await conn.rollback();
-      console.error(err);
+      console.error(`id->${id} attr-> ${attr} len->${len}`,err);
     }
   }
 
@@ -110,7 +110,7 @@ class HomeService extends BaseService {
     } catch (err) {
       // 异常后回滚
       await conn.rollback();
-      console.error(err);
+      console.error(`attr-> ${attr} start->${start} len->${len}`,err);
     }
   }
 
@@ -183,7 +183,7 @@ class HomeService extends BaseService {
     } catch (err) {
       // 异常后回滚
       await conn.rollback();
-      console.error(err);
+      console.error(`id->${id} len->${len}`,err);
     }
   }
 
@@ -221,7 +221,7 @@ class HomeService extends BaseService {
     } catch (err) {
       // 异常后回滚
       await conn.rollback();
-      console.error(err);
+      console.error(`id->${id} len->${len}`,err);
     }
   }
 
@@ -272,7 +272,7 @@ class HomeService extends BaseService {
     } catch (err) {
       // 异常后回滚
       await conn.rollback();
-      console.error(err);
+      console.error(`id->${id} current->${current} pageSize->${pageSize}`,err);
     }
   }
 
