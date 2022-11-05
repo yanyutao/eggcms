@@ -105,11 +105,11 @@
 ------
 > * [世界气功网](http://www.shijieqigong.com/)
 
-![图片](https://gitee.com/yanyutao0402/eggcms/blob/master/raw/%E4%B8%96%E7%95%8C%E6%B0%94%E5%8A%9F%E7%BD%91.png)
+![图片](https://gitee.com/yanyutao0402/eggcms/raw/master/back/%E4%B8%96%E7%95%8C%E6%B0%94%E5%8A%9F%E7%BD%91.png)
 
 > * [世界大健康运动联盟](http://www.worldhealthgames.com/)
 
-![图片](https://gitee.com/yanyutao0402/eggcms/blob/master/raw/%E4%B8%96%E7%95%8C%E5%A4%A7%E5%81%A5%E5%BA%B7%E8%BF%90%E5%8A%A8%E8%81%94%E7%9B%9F.png)
+![图片](https://gitee.com/yanyutao0402/eggcms/raw/master/back/%E4%B8%96%E7%95%8C%E5%A4%A7%E5%81%A5%E5%BA%B7%E8%BF%90%E5%8A%A8%E8%81%94%E7%9B%9F.png)
 
 
 ### 关注项目
