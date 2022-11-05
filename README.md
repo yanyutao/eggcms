@@ -34,6 +34,19 @@
 > * 友情链接模块
 > * 在线留言模块
 
+登录界面
+![图片](https://gitee.com/yanyutao0402/eggcms/raw/master/back/%E7%99%BB%E5%BD%95-eggcms%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F.png)
+
+栏目界面
+![图片](https://gitee.com/yanyutao0402/eggcms/raw/master/back/%E6%A0%8F%E7%9B%AE%E7%AE%A1%E7%90%86-eggcms%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F.png)
+
+文章界面
+![图片](https://gitee.com/yanyutao0402/eggcms/raw/master/back/%E6%96%87%E7%AB%A0%E7%AE%A1%E7%90%86-eggcms%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F.png)
+
+![图片](https://gitee.com/yanyutao0402/eggcms/raw/master/back/%E6%96%87%E7%AB%A0%E6%9B%B4%E6%96%B0-eggcms.png)
+
+![图片](https://gitee.com/yanyutao0402/eggcms/raw/master/back/%E6%96%87%E7%AB%A0%E6%9B%B4%E6%96%B01-eggcms.png)
+
 
 ## 本地开发运行
 ------
@@ -63,7 +76,15 @@
     ```
    默认账号密码：**eggcms**  **123456**
 
+* 5.后端管理界面开发指南（不开发忽略这一步）
 
+    进入client文件夹
+    ```
+    执行npm i,npm run dev  
+    ```
+    后访问 http://localhost:3000 后台管理界面开发，
+    功能开发完成后执行npm run build即可。
+    
 
 
 ## linux服务器部署
@@ -84,13 +105,15 @@
 ------
 > * [世界气功网](http://www.shijieqigong.com/)
 
+![图片](https://gitee.com/yanyutao0402/eggcms/blob/master/raw/%E4%B8%96%E7%95%8C%E6%B0%94%E5%8A%9F%E7%BD%91.png)
+
 > * [世界大健康运动联盟](http://www.worldhealthgames.com/)
+
+![图片](https://gitee.com/yanyutao0402/eggcms/blob/master/raw/%E4%B8%96%E7%95%8C%E5%A4%A7%E5%81%A5%E5%BA%B7%E8%BF%90%E5%8A%A8%E8%81%94%E7%9B%9F.png)
 
 
 ### 关注项目
 ------
 > * [github地址]https://github.com/yanyutao/eggcms
 > * [gitee地址]https://gitee.com/yanyutao0402/eggcms
-
-
 
