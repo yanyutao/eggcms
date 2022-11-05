@@ -89,8 +89,8 @@
 
 ### 关注项目
 ------
-> * [github地址]（https://github.com/yanyutao/eggcms） 
-> * [gitee地址]（https://gitee.com/yanyutao0402/eggcms）
+> * [github地址]https://github.com/yanyutao/eggcms
+> * [gitee地址]https://gitee.com/yanyutao0402/eggcms
 
 
 
