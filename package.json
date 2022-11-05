@@ -1,0 +1,60 @@
+{
+  "name": "eggcms",
+  "version": "1.0.0",
+  "description": "基于eggjs vue3 mysql pm2轻量cms管理系统。",
+  "private": true,
+  "egg": {
+    "declarations": true
+  },
+  "dependencies": {
+    "await-stream-ready": "^1.0.1",
+    "cheerio": "^1.0.0-rc.12",
+    "dayjs": "^1.11.4",
+    "egg": "^2.36.0",
+    "egg-mysql": "^3.1.1",
+    "egg-scripts": "^2.17.0",
+    "egg-view-ejs": "^3.0.0",
+    "iconv-lite": "^0.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
+    "stream-wormhole": "^1.1.0",
+    "svg-captcha": "^1.4.0"
+  },
+  "devDependencies": {
+    "autod": "^3.1.2",
+    "autod-egg": "^1.1.0",
+    "egg-bin": "^5.2.0",
+    "egg-ci": "^2.1.0",
+    "egg-mock": "^4.2.1",
+    "eslint": "^8.20.0",
+    "eslint-config-egg": "^12.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "start": "egg-scripts start --daemon --title=qigong",
+    "stop": "egg-scripts stop --title=qigong",
+    "app": "pm2 start pm2.json",
+    "dev": "egg-bin dev",
+    "init": "npm i --production",
+    "flush": "pm2 flush",
+    "debug": "egg-bin debug",
+    "test": "npm run lint -- --fix && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm run cov",
+    "autod": "autod",
+    "sit": "egg-bin dev --env=sit --daemon --port 8088"
+  },
+  "ci": {
+    "version": "16"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "yanyutao",
+  "license": "MIT"
+}

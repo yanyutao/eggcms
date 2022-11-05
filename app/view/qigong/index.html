@@ -1,0 +1,662 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <%- include('meta.html') %>
+        <meta name="keywords" content="<%=site.keywords%>" />
+        <meta name="description" content="<%=site.description%>" />
+        <title>
+            <%=site.title%>
+        </title>
+        <%- include('css.html') %>
+        <link href="https:/dn.bootcss.com/Swiper/4.3.0ss/swiper.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-f8f8f8">
+    <%- include('header.html') %>
+        <%- include('nav.html') %>
+
+            <main class="center w-1200 mt-20 mb-20 overflow-h row">
+                <div class="main-left flex overflow-h">
+
+                    <div class="floor row">
+                        <!-- 轮播图 -->
+                        <div class="swiper bg-fff overflow-h">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <%for(let i=0,item;i<slide.length;i++){%>
+                                        <%item=slide[i]%>
+                                            <div class="swiper-slide">
+                                                <a href="/a<%=item.path%>/<%=item.id%>.html">
+                                                    <img class="w-p100" src="<%=item.img%>" alt="<%=item.title%>">
+                                                </a>
+                                            </div>
+                                            <%}%>
+                                </div>
+
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+
+                        <!-- 最新文章 -->
+                        <div class="news bg-fff ml-20 pd-15">
+                            <!-- 头条 -->
+                            <div>
+                            <h3 class="f-16 text-c">
+                                <a class="c-333 ellips-1" href="/a<%=top.path%>/<%=top.id%>.html"
+                                    target="_blank">
+                                    <%=top.title%>
+                                </a>
+                            </h3>
+                            <p class="c-666 f-14 lh-20 mt-12">
+                                <a class="ellips-3" href="/a<%=top.path%>/<%=top.id%>.html">
+                                    <%=top.description%>
+                                </a>
+                            </p>
+                                        
+                            </div>
+
+                            <div class="mt-12">
+                                <ul class="ul f-14 c-666">
+                                    <%for(let i=0,item;i<topList.length;i++){%>
+                                        <%item=topList[i]%>
+                                            <li class="mb-6 row space-b">
+                                                <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                    <%=item.title.substring(0,25)%>...
+                                                </a>
+                                                <time class="c-ccc f-12">
+                                                    <%=item.createdAt%>
+                                                </time>
+                                            </li>
+                                            <%}%>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ad mt-20">
+                        <%if(ad && ad.disanjie){%>
+                            <a href="<%=ad.disanjie.link%>" target="_blank">
+                                <img src="<%=ad.disanjie.imgUrl%>" class="img-responsive" alt="">
+                            </a>
+                            <%}%>
+                    </div>
+
+                    <div class="ad mt-20">
+                        <%if(ad && ad.qianxuesen){%>
+                            <a href="<%=ad.qianxuesen.link%>" target="_blank">
+                                <img src="<%=ad.qianxuesen.imgUrl%>" class="img-responsive" alt="">
+                            </a>
+                            <%}%>
+                    </div>
+
+                    <!-- 气功新闻/学术交流 -->
+                    <div class="floor row mt-20">
+                        <div class="mr-18 item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">
+                                    <%=news.tj.name%>
+                                </span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=news.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=news.tj.path%>/<%=news.tj.id%>.html"
+                                            target="_blank">
+                                            <%=news.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=news.tj.path%>/<%=news.tj.id%>.html">
+                                            <%=news.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(news.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<news.list.length;i++){%>
+                                                <%item=news.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">学术交流</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=xueshu.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=xueshu.tj.path%>/<%=xueshu.tj.id%>.html"
+                                            target="_blank">
+                                            <%=xueshu.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=xueshu.tj.path%>/<%=xueshu.tj.id%>.html">
+                                            <%=xueshu.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(xueshu.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<xueshu.list.length;i++){%>
+                                                <%item=xueshu.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ad mt-20">
+                        <%if(ad && ad.wushaozu){%>
+                            <a href="<%=ad.wushaozu.link%>" target="_blank">
+                                <img src="<%=ad.wushaozu.imgUrl%>" class="img-responsive" alt="">
+                            </a>
+                            <%}%>
+                    </div>
+
+                    <!-- 体育气功/医学气功 -->
+                    <div class="floor row mt-20">
+                        <div class="mr-18 item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">体育气功</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=tiyu.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=tiyu.tj.path%>/<%=tiyu.tj.id%>.html"
+                                            target="_blank">
+                                            <%=tiyu.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=tiyu.tj.path%>/<%=tiyu.tj.id%>.html">
+                                            <%=tiyu.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(tiyu.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<tiyu.list.length;i++){%>
+                                                <%item=tiyu.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">医学气功</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=yixue.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=yixue.tj.path%>/<%=yixue.tj.id%>.html"
+                                            target="_blank">
+                                            <%=yixue.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=yixue.tj.path%>/<%=yixue.tj.id%>.html">
+                                            <%=yixue.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(yixue.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<yixue.list.length;i++){%>
+                                                <%item=yixue.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ad mt-20">
+                        <%if(ad && ad.fenglida){%>
+                            <a href="<%=ad.fenglida.link%>" target="_blank">
+                                <img src="<%=ad.fenglida.imgUrl%>" class="img-responsive" alt="">
+                            </a>
+                            <%}%>
+                    </div>
+
+                    <div class="ad mt-20">
+                        <%if(ad && ad.xianggangribao){%>
+                            <a href="<%=ad.xianggangribao.link%>" target="_blank">
+                                <img src="<%=ad.xianggangribao.imgUrl%>" class="img-responsive" alt="">
+                            </a>
+                            <%}%>
+                    </div>
+
+
+                    <!-- 气功新闻 -->
+                    <div class="floor row mt-20">
+                        <div class="mr-18 item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">养生气功</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=ys.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=ys.tj.path%>/<%=ys.tj.id%>.html" target="_blank">
+                                            <%=ys.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=ys.tj.path%>/<%=ys.tj.id%>.html">
+                                            <%=ys.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(ys.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<ys.list.length;i++){%>
+                                                <%item=ys.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">气功医案</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=ya.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=ya.tj.path%>/<%=ya.tj.id%>.html" target="_blank">
+                                            <%=ya.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=ya.tj.path%>/<%=ya.tj.id%>.html">
+                                            <%=ya.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(ya.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<ya.list.length;i++){%>
+                                                <%item=ya.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 气功与书画 -->
+                    <div class="floor row mt-20">
+                        <div class="mr-18 item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">气功与书画</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=sh.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=sh.tj.path%>/<%=sh.tj.id%>.html" target="_blank">
+                                            <%=sh.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=sh.tj.path%>/<%=sh.tj.id%>.html">
+                                            <%=sh.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(sh.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<sh.list.length;i++){%>
+                                                <%item=sh.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">气功人物</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=rw.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=rw.tj.path%>/<%=rw.tj.id%>.html" target="_blank">
+                                            <%=rw.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=rw.tj.path%>/<%=rw.tj.id%>.html">
+                                            <%=rw.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(rw.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<rw.list.length;i++){%>
+                                                <%item=rw.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 功法实践/气功纠偏 -->
+                    <div class="floor row mt-20">
+                        <div class="mr-18 item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">功法实践</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=sj.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=sj.tj.path%>/<%=sj.tj.id%>.html" target="_blank">
+                                            <%=sj.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=sj.tj.path%>/<%=sj.tj.id%>.html">
+                                            <%=sj.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(sj.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<sj.list.length;i++){%>
+                                                <%item=sj.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                <%}%>
+                                        </ul>
+                                        <%}%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item bg-fff pd-15">
+                            <h2 class="row item-title space-b row-c f-18">
+                                <span class="pt-6 pb-12 pl-5 pr-5 c-333">注意事项</span>
+                                <a class="more f-12 pos-r t-4" href="/c<%=jp.tj.path%>/index.html"
+                                    target="_blank">>>更多</a>
+                            </h2>
+                            <div>
+                                <div class="mt-14">
+
+                                    <h3 class="f-16 text-c ellips-1">
+                                        <a class="c-333" href="/a<%=jp.tj.path%>/<%=jp.tj.id%>.html" target="_blank">
+                                            <%=jp.tj.title%>
+                                        </a>
+                                    </h3>
+                                    <p class="c-666 f-14 ellips-3 lh-20 mt-12">
+                                        <a href="/a<%=jp.tj.path%>/<%=jp.tj.id%>.html">
+                                            <%=jp.tj.description%>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <div class="mt-12">
+                                    <%if(jp.list.length>0){%>
+                                        <ul class="ul f-14 c-666">
+                                            <%for(let i=0,item;i<jp.list.length;i++){%>
+                                                <%item=jp.list[i]%>
+                                                    <li class="mb-6 row space-b">
+                                                        <a href="/a<%=item.path%>/<%=item.id%>.html" target="_blank">
+                                                            <%=item.title%>
+                                                        </a>
+                                                        <time class="c-ccc f-12">
+                                                            <%=item.createdAt%>
+                                                        </time>
+                                                    </li>
+                                                    <%}%>
+                                        </ul>
+                                    <%}%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-right ml-20 w-235">
+                    <div class="aside-list mb-20 bg-fff pd-15">
+                        <h3 class="c-333 f-16  mb-5 mt-5">
+                            <i class="ico-20 ico-hot pos-r t-3 mr-12"></i>热门文章
+                        </h3>
+                        <ul class="c-666 f-14">
+                            <li>
+                                <a href="/article/712.html" class="ellips-1" target="_blank">
+                                    世界大健康运动联盟词条
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/article/711.html" class="ellips-1" target="_blank">
+                                    国际健康健美长寿论坛博览会暨世界大健康运动会简介
+                                </a>
+                            </li>
+                            <%if(hot.length>0){%>
+                                <%for(let i=0,item;i<hot.length;i++){%>
+                                    <%item=hot[i]%>
+                                        <li>
+                                            <a href="/a<%=item.path%>/<%=item.id%>.html" class="ellips-1"
+                                                target="_blank">
+                                                <%=item.title%>
+                                            </a>
+                                        </li>
+                                        <%}%>
+                                <%}%>
+                        </ul>
+                    </div>
+
+                    <div class="aside-list mb-20 bg-fff pd-15">
+                        <h3 class="c-333 f-16  mb-5 mt-5">
+                            <i class="ico-20 ico-hot pos-r t-3 mr-12"></i>世界气功网开通
+                        </h3>
+                        <p class="c-666 f-14">
+                            <a href="/article/8.html" target="_blank"> 世界气功是由世界大健康运动联盟主办，面向世界，弘扬健康养生文化，传播优秀健身方法，
+                                汇聚各国健康养生新信息新成果等信息服务。详情>></a>
+                        </p>
+                    </div>
+
+
+
+                    <div class="mb-20">
+                        <img src="http://www.hongkongdaily.net/upload/2018-05-30/363d6fd4509b27c228fb9ec3deb0bc3e.jpg"
+                            class="img-responsive" alt="">
+                    </div>
+
+                    <div class="mb-20">
+                        <%if(ad && ad.taiji){%>
+                            <a href="<%=ad.taiji.link%>" target="_blank">
+                                <img src="<%=ad.taiji.imgUrl%>" class="img-responsive" alt="">
+                            </a>
+                            <%}%>
+                    </div>
+
+                    <!--李春生文集-->
+                    <div class="aside-list mb-20 bg-fff pd-15">
+                        <h3 class="c-333 f-16 mb-5 mt-5 row row-c space-b">
+                            <span>
+                                李春生文集</span>
+                            <a class="more f-12 pos-r t-4" href="/c/lichunshengwenji/index.html" target="_blank">>>更多</a>
+                        </h3>
+                        <ul class="c-666 f-14">
+                            <%for(let i=0,item;i<chunsheng.length;i++){%>
+                                <%item=chunsheng[i]%>
+                                    <li>
+                                        <a href="/a<%=item.path%>/<%=item.id%>.html" class="ellips-1" target="_blank">
+                                            <%=item.title%>
+                                        </a>
+                                    </li>
+                                    <%}%>
+                        </ul>
+                    </div>
+
+                    <div class="aside-list mb-20 bg-fff pd-15">
+                        <h3 class="c-333 f-16 mb-5 mt-5 row row-c space-b">
+                            <span>
+                                <i class="ico-20 ico-taiji pos-r t-3 mr-12"></i>太极</span>
+                            <a class="more f-12 pos-r t-4" href="/c<%=taiji[0].path%>/index.html"
+                                target="_blank">>>更多</a>
+                        </h3>
+                        <ul class="c-666 f-14">
+                            <%for(let i=0,item;i<taiji.length;i++){%>
+                                <%item=taiji[i]%>
+                                    <li>
+                                        <a href="/a<%=item.path%>/<%=item.id%>.html" class="ellips-1" target="_blank">
+                                            <%=item.title%>
+                                        </a>
+                                    </li>
+                                    <%}%>
+                        </ul>
+                    </div>
+                    <div class="mb-20">
+                        <%if(ad && ad.yujia){%>
+                            <a href="<%=ad.yujia.link%>" target="_blank">
+                                <img src="<%=ad.yujia.imgUrl%>" class="img-responsive" alt="">
+                            </a>
+                            <%}%>
+                    </div>
+
+                </div>
+
+            </main>
+
+            <%- include('footer.html') %>
+                <script src="http:/dn.bootcss.com/Swiper/4.3.0/js/swiper.min.js"></script>
+                <%- include('js.html') %>
+                    <script>
+                        var mySwiper = new Swiper('.swiper-container', {
+                            loop: true,
+                            pagination: {
+                                el: '.swiper-pagination',
+                            },
+                            navigation: {
+                                nextEl: '.swiper-button-next',
+                                prevEl: '.swiper-button-prev',
+                            }
+                        });
+                    </script>
+</body>
+
+</html>

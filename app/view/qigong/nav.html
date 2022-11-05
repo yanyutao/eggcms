@@ -1,0 +1,14 @@
+<%if(nav && nav.length>0){%>
+    <nav class="nav center w-1200 bg-fff pd-15 mt-20">
+        <ul class="overflow-h">
+            <%for(let i=0,item;i<nav.length;i++){%>
+            <%item = nav[i]%>
+                <%if(item.status == 0){%>
+                <li>
+                    <a href="/c<%=item.path%>/index.html"><%= item.name%></a>
+                </li>
+                <%}%>
+            <%}%>
+        </ul>
+    </nav>
+<%}%>    

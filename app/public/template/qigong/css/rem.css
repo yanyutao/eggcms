@@ -1,0 +1,158 @@
+
+/**
+** 将屏幕分成75份
+*/
+html {
+	background-color: #f6f6f6;
+	font-size: 100px
+}
+
+@media (min-width:315px) {
+	html {
+		font-size: 84px
+	}
+}
+
+@media (min-width:320px) {
+	html {
+		font-size: 85.33333333333334px
+	}
+}
+
+@media (min-width:325px) {
+	html {
+		font-size: 86.66666666666667px
+	}
+}
+
+@media (min-width:330px) {
+	html {
+		font-size: 88px
+	}
+}
+
+@media (min-width:335px) {
+	html {
+		font-size: 89.33333333333333px
+	}
+}
+
+@media (min-width:340px) {
+	html {
+		font-size: 90.66666666666666px
+	}
+}
+
+@media (min-width:345px) {
+	html {
+		font-size: 92px
+	}
+}
+
+@media (min-width:350px) {
+	html {
+		font-size: 93.33333333333333px
+	}
+}
+
+@media (min-width:355px) {
+	html {
+		font-size: 94.66666666666667px
+	}
+}
+
+@media (min-width:360px) {
+	html {
+		font-size: 96px
+	}
+}
+
+@media (min-width:365px) {
+	html {
+		font-size: 97.33333333333334px
+	}
+}
+
+@media (min-width:370px) {
+	html {
+		font-size: 98.66666666666667px
+	}
+}
+
+@media (min-width:375px) {
+	html {
+		font-size: 100px
+	}
+}
+
+@media (min-width:380px) {
+	html {
+		font-size: 101.33333333333334px
+	}
+}
+
+@media (min-width:385px) {
+	html {
+		font-size: 102.66666666666666px
+	}
+}
+
+@media (min-width:390px) {
+	html {
+		font-size: 104px
+	}
+}
+
+@media (min-width:395px) {
+	html {
+		font-size: 105.33333333333333px
+	}
+}
+
+@media (min-width:400px) {
+	html {
+		font-size: 106.66666666666667px
+	}
+}
+
+@media (min-width:405px) {
+	html {
+		font-size: 108px
+	}
+}
+
+@media (min-width:410px) {
+	html {
+		font-size: 109.33333333333333px
+	}
+}
+
+@media (min-width:415px) {
+	html {
+		font-size: 110.66666666666667px
+	}
+}
+
+@media (min-width:420px) {
+	html {
+		font-size: 112.00000000000001px
+	}
+}
+
+@media (min-width:425px) {
+	html {
+		font-size: 113.33333333333333px
+	}
+}
+
+@media (min-width:430px) {
+	html {
+		font-size: 114.66666666666667px
+	}
+}
+
+@media (min-width:435px) {
+	html {
+		font-size: 115.99999999999999px
+	}
+}

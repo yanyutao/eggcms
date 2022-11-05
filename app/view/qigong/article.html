@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('meta.html') %>
+    <meta name="keywords" content="<%=site.keywords%>,<%=position[0].name%>" />
+    <meta name="description" content="<%=site.description%>" />
+    <title>
+        <%=article.title%>-<%=position[0].name%>|<%=site.title%>
+    </title>
+    <%- include('css.html') %>
+</head>
+
+<body class="bg-f8f8f8">
+    <%- include('header.html') %>
+    <%- include('nav.html') %>
+
+    <div class="position center w-1200 bg-fff pd-15 mt-20 f-14 c-999">
+        <i class="ico-20 ico-home pos-r t-3"></i> 
+        <a class="" href="/">首页</a> >
+        <%for(let i=0,item;i<position.length;i++){%>
+            <%item=position[i]%>
+             
+                <a href="/c<%=item.path%>/index.html">
+                    <%=item.name%>
+                        <%if(i !=position.length-1){%>
+                            &gt;
+                            <%}%>
+                </a>
+                <%}%>&gt;
+            <%=article.title%>
+    </div>
+    
+    <main class="center w-1200 mt-20 mb-20 overflow-h row">
+        <div class="main-left flex">
+            <div class="content bg-fff pd-25">
+               <header class="border-b pos-r">
+                    <h2 class="f-16 c-333 text-c bold mt-10"><%=article.title%></h2>
+                    <p class="f-12 c-999 mt-5 mb-26 text-c">
+                        <span>
+                            <i class="ico-20 ico-time pos-r t-4"></i> <%=article.createdAt%>
+                            <i class="ico-20 ico-admin pos-r t-4 ml-4"></i> <%=article.author%>
+                            <i class="ico-20 ico-view pos-r t-5 ml-4"></i> 阅读（<%=article.pv%>） 
+                            <!-- <i class="ico-20 ico-zan pos-r t-4 ml-4"></i>点赞（95） -->
+                        </span>
+                    </p>
+               </header>
+               <article>
+                    <%-article.content%>
+               </article>
+                 
+            </div>
+            
+            <footer class="pd-25 bg-fff mt-25 f-14 c-333">
+                <%if(pre){%>
+                <p>上一篇：<a href="/a<%=pre.path%>/<%=pre.id%>.html" class="c-666"><%=pre.title%></a></p>
+                <%}%>
+                <%if(next){%>
+                <p class="mt-14">下一篇：<a href="/a<%=next.path%>/<%=next.id%>.html"  class="c-666"><%=next.title%></a></p>
+                <%}%>
+            </footer>
+            
+        </div>
+        
+        <%- include('aside_right.html') %>
+    </main>
+
+    <%- include('footer.html') %>
+    <%- include('js.html') %>
+   
+</body>
+</html>

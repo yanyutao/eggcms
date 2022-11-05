@@ -1,0 +1,3 @@
+Disallow: /user
+Disallow: /admin
+Disallow: /public

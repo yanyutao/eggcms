@@ -1,0 +1,93 @@
+<div class="main-right ml-20 w-235">
+        <%if(navSub?.cate?.children){%>
+        <div class="sub-category f-14 pd-10" id="">
+            <h2 class="border-b">子栏目导航</h2>
+            <%for(let i=0,item;i<navSub.cate.children.length;i++){%>
+                <%item = navSub.cate.children[i];%>
+                <span class="ml-4 mr-4"><a href="/c<%=item.path%>/index.html"><%=item.name%></a></span>
+            <%}%>
+        </div>
+        <%}%>
+
+        <% if(tj.list && tj.list.length>0){%>
+        <div class="aside-list mb-20 bg-fff pd-15">
+            <h3 class="c-333 f-16  mb-5 mt-5">
+            <i class="ico-20 ico-hot pos-r t-3 mr-12"></i>推荐</h3>
+            <ul class="c-666 f-14">
+                <%for(let i=0,item;i<tj.list.length;i++){%>
+                <%item = tj.list[i];%>
+                <li><a href="/a<%=item.path%>/<%=item.id%>.html" class="ellips-1"><%=item.title%></a></li>
+                <%}%>
+            </ul>
+        </div>
+        <%}%>
+
+        <div class="mb-20">
+            <a href="">
+                <img src="<%=base_url%>/img/ad3.png" alt="">
+            </a>
+        </div>
+       
+        <% if(hot.list && hot.list.length>0){%>
+        <div class="aside-list mb-20 bg-fff pd-15">
+            <h3 class="c-333 f-16 mb-5 mt-5 row row-c space-b">
+                <span>
+                    <i class="ico-20 ico-taiji pos-r t-3 mr-12"></i>热门</span>
+                <a class="more f-12 pos-r t-4" href="/c<%=hot.list[0].path%>/index.html">>>更多</a>
+            </h3>
+            <ul class="c-666 f-14">
+                <%for(let i=0,item;i<hot.list.length;i++){%>
+                    <%item = hot.list[i];%>
+                    <li><a href="/a<%=item.path%>/<%=item.id%>.html" class="ellips-1"><%=item.title%></a></li>
+                    <%}%>
+            </ul>
+        </div>
+        <%}%>
+
+        <div class="mb-20">
+            <a href="">
+                <img src="<%=base_url%>/img/tj.jpg" alt="">
+            </a>
+        </div>
+
+        <% if(pic.list && pic.list.length>0){%>
+        <div class="aside-list mb-20 bg-fff pd-15">
+            <h3 class="c-333 f-16 mb-5 mt-5 row row-c space-b">
+                <span>
+                <i class="ico-20 ico-yujia pos-r t-3 mr-12"></i>本类图文</span>
+                <a class="more f-12 pos-r t-4" href="/c<%=pic.list[0].path%>/index.html">>>更多</a>
+            </h3>
+            <ul class="c-666 f-14">
+                <%for(let i=0,item;i<pic.list.length;i++){%>
+                    <%item = pic.list[i];%>
+                    <li><a href="/a<%=item.path%>/<%=item.id%>.html" class="ellips-1"><%=item.title%></a></li>
+                    <%}%>
+            </ul>
+        </div>
+        <%}%>
+
+        <div class="mb-20">
+            <a href="">
+                <img src="<%=base_url%>/img/yj.jpg" alt="">
+            </a>
+        </div>
+
+        <!-- <div class="pd-15 mb-20 bg-fff">
+            <p class="c-333 f-16 mb-5 mt-5 row row-c space-b">官方微信群</p>
+            <p class="text-c mt-16 mb-16">
+                <img src="<%=base_url%>img/wx.jpg" class="inline-b" alt="微信二维码">
+            </p>
+            <p class="f-12 lh-20 c-666">高质量微信气功交流群 扫描以上二维码，添加好友，需要严格审核入群，名额有限，可先加下面QQ交流群。
+            </p>
+        </div>
+
+        <div class="pd-15 bg-fff">
+            <p class="c-333 f-16 mb-5 mt-5 row row-c space-b">官方QQ交流群</p>
+            <div class="f-14 lh-22 pt-10">
+                <p class="c-666">世界气功网(1) 1234564634</p>
+                <p class="c-666">世界气功网群(2) 1234564634</p>
+                <p class="c-666">世界气功网群(3) 1234564634</p>
+            </div>
+        </div> -->
+
+    </div>
