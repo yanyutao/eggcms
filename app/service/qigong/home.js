@@ -21,9 +21,10 @@ class HomeService extends BaseService {
       await conn.commit();
       return nav;
     } catch (err) {
+      console.error(err);
       // 异常后回滚
       await conn.rollback();
-      console.error(err);
+
     }
 
   }
@@ -42,13 +43,13 @@ class HomeService extends BaseService {
       await conn.commit();
       return ad;
     } catch (err) {
+      console.error(`platform-> ${platform} position->${position}`, err);
       // 异常后回滚
       await conn.rollback();
-      console.error(`platform-> ${platform} position->${position}`,err);
+
     }
 
   }
-
 
   //  指定栏目和文章 1头条 2推荐-右侧 3轮播 4热门事件
   async getArticleListById(id, attr, len = 5) {
@@ -60,8 +61,8 @@ class HomeService extends BaseService {
     try {
 
       // 获取所有id
-      const res = await conn.query('SELECT id FROM category WHERE pid=?', [ id ]);
-      let ids = [ id ];
+      const res = await conn.query('SELECT id FROM category WHERE pid=?', [id]);
+      let ids = [id];
       res.forEach(item => {
         ids.push(item.id);
       });
@@ -72,18 +73,19 @@ class HomeService extends BaseService {
         result;
       if (attr) {
         sql = `SELECT a.id,a.title,a.short_title,a.img,a.createdAt,a.description,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id WHERE a.cid IN (?)  AND a.attr LIKE \'%?%\'  ORDER BY createdAt DESC LIMIT 0,${len}`;
-        result = await this.app.mysql.query(sql, [ ids, +attr ]);
+        result = await this.app.mysql.query(sql, [ids, +attr]);
       } else {
         sql = `SELECT a.id,a.title,a.short_title,a.img,a.createdAt,a.description,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id WHERE a.cid IN (?) ORDER BY createdAt DESC LIMIT 0,${len}`;
-        result = await this.app.mysql.query(sql, [ ids ]);
+        result = await this.app.mysql.query(sql, [ids]);
       }
       // 提交事务
       await conn.commit();
       return { list: result };
     } catch (err) {
+      console.error(`id->${id} attr-> ${attr} len->${len}`, err);
       // 异常后回滚
       await conn.rollback();
-      console.error(`id->${id} attr-> ${attr} len->${len}`,err);
+
     }
   }
 
@@ -99,7 +101,7 @@ class HomeService extends BaseService {
         result;
       if (attr) {
         sql = `SELECT a.id,a.title,a.short_title,a.img,a.createdAt,a.description,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id WHERE a.attr LIKE \'%?%\'  ORDER BY createdAt DESC LIMIT ${start},${len}`;
-        result = await this.app.mysql.query(sql, [ +attr ]);
+        result = await this.app.mysql.query(sql, [+attr]);
       } else {
         sql = `SELECT a.id,a.title,a.short_title,a.img,a.createdAt,a.description,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id  ORDER BY createdAt DESC LIMIT ${start},${len}`;
         result = await this.app.mysql.query(sql, []);
@@ -108,9 +110,10 @@ class HomeService extends BaseService {
       await conn.commit();
       return { list: result };
     } catch (err) {
+      console.error(`attr-> ${attr} start->${start} len->${len}`, err);
       // 异常后回滚
       await conn.rollback();
-      console.error(`attr-> ${attr} start->${start} len->${len}`,err);
+
     }
   }
 
@@ -159,20 +162,18 @@ class HomeService extends BaseService {
     // 初始化事务
     const conn = await app.mysql.beginTransaction();
     try {
-
-      // 获取所有id
-      const res = await conn.query('SELECT id FROM category WHERE pid=?', [ id ]);
-      let ids = [ id ];
-      res.forEach(item => {
-        ids.push(item.id);
-      });
-      ids = ids.join(',');
-
       let sql,
         result;
+      // 获取所有id
       if (id) {
+        const res = await conn.query('SELECT id FROM category WHERE pid=?', [id]);
+        let ids = [id];
+        res.forEach(item => {
+          ids.push(item.id);
+        });
+        ids = ids.join(',');
         sql = `SELECT a.id,a.title,a.short_title,a.img,a.createdAt,a.description,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id WHERE cid IN (?)  ORDER BY pv DESC LIMIT 0,${len}`;
-        result = await this.app.mysql.query(sql, [ ids ]);
+        result = await this.app.mysql.query(sql, [ids]);
       } else {
         sql = `SELECT a.id,a.title,a.short_title,a.img,a.createdAt,a.description,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id ORDER BY pv DESC LIMIT 0,${len}`;
         result = await this.app.mysql.query(sql, []);
@@ -181,9 +182,9 @@ class HomeService extends BaseService {
       await conn.commit();
       return { list: result };
     } catch (err) {
+      console.error(`id->${id} len->${len}`, err);
       // 异常后回滚
       await conn.rollback();
-      console.error(`id->${id} len->${len}`,err);
     }
   }
 
@@ -198,8 +199,8 @@ class HomeService extends BaseService {
     try {
 
       // 获取所有id
-      const res = await conn.query('SELECT id FROM category WHERE pid=?', [ id ]);
-      let ids = [ id ];
+      const res = await conn.query('SELECT id FROM category WHERE pid=?', [id]);
+      let ids = [id];
       res.forEach(item => {
         ids.push(item.id);
       });
@@ -209,19 +210,20 @@ class HomeService extends BaseService {
         result;
       if (id) {
         sql = `SELECT a.id,a.title,a.short_title,a.img,a.createdAt,a.description,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id  WHERE a.img!='' AND a.cid IN (?) ORDER BY createdAt DESC LIMIT 0,${len}`;
-        result = await this.app.mysql.query(sql, [ ids ]);
+        result = await this.app.mysql.query(sql, [ids]);
       } else {
         sql = `SELECT a.id,a.title,a.short_title,a.img,a.createdAt,a.description,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id  WHERE img!='' ORDER BY createdAt DESC LIMIT 0,${len}`;
-        result = await this.app.mysql.query(sql, [ ]);
+        result = await this.app.mysql.query(sql, []);
       }
 
       // 提交事务
       await conn.commit();
       return { list: result };
     } catch (err) {
+      console.error(`id->${id} len->${len}`, err);
       // 异常后回滚
       await conn.rollback();
-      console.error(`id->${id} len->${len}`,err);
+
     }
   }
 
@@ -239,8 +241,8 @@ class HomeService extends BaseService {
 
       // 获取所有id
       if (id) {
-        const res = await conn.query('SELECT id FROM category WHERE pid=?', [ id ]);
-        ids = [ id ];
+        const res = await conn.query('SELECT id FROM category WHERE pid=?', [id]);
+        ids = [id];
         res.forEach(item => {
           ids.push(item.id);
         });
@@ -258,7 +260,7 @@ class HomeService extends BaseService {
         sql2 = `SELECT a.id,a.title,a.short_title,a.img,a.description,a.createdAt,a.author,a.pv,c.pinyin,c.name,c.path from article AS a LEFT JOIN category as c ON a.cid = c.id ORDER BY createdAt DESC LIMIT ${start},${pageSize}`;
       }
       const total = await conn.query(sql1);
-      const result = await conn.query(sql2, [ ]);
+      const result = await conn.query(sql2, []);
       const count = total[0].count || 1;
       // 提交事务
       await conn.commit(); // 提交事务
@@ -270,9 +272,10 @@ class HomeService extends BaseService {
       };
 
     } catch (err) {
+      console.error(`id->${id} current->${current} pageSize->${pageSize}`, err);
       // 异常后回滚
       await conn.rollback();
-      console.error(`id->${id} current->${current} pageSize->${pageSize}`,err);
+
     }
   }
 

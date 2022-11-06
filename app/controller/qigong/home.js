@@ -138,7 +138,7 @@ class HomeController extends Controller {
     });
 
     // 热门文章
-    const _hot = await service[this.config.template].home.getArticlePvList(10);
+    const _hot = await service[this.config.template].home.getArticlePvList();
     const hot = _hot.list;
 
     // 李春生文集
@@ -169,6 +169,13 @@ class HomeController extends Controller {
       // 当前栏目和当前栏目下所有子导航
       const navSub = ctx.helper.getChildrenId(cate || cid, ctx.app.locals.category);
       const id = cid ? cid : navSub.cate.id;
+
+      if (!id) {
+        console.log(`list_id${id}`);
+        ctx.redirect('/');
+        return;
+      }
+
       // 当前位置
       const position = ctx.helper.treeById(id, ctx.app.locals.category);
 
@@ -186,7 +193,7 @@ class HomeController extends Controller {
         ele.createdAt = dayjs(ele.createdAt).format('MM-DD');
       });
       // 本类推荐
-      const tj = await service[this.config.template].home.getArticleListById(id, currentPage, pageSize);
+      const tj = await service[this.config.template].home.getArticleListById(id, 2, 5);
 
       // 本类热门
       const hot = await service[this.config.template].home.getArticlePvList(id, 10);
@@ -209,15 +216,10 @@ class HomeController extends Controller {
       const id = ctx.params.id.replace('.html', '');
 
       if (!id) {
-        ctx.redirect('/404.html');
+        console.log(`article_id${id}`);
+        ctx.redirect('/');
+        return;
       }
-      // 广告
-      let ad = await service[this.config.template].home.ad(1, 3);
-      const obj = {};
-      ad.forEach(item => {
-        obj[item.mark] = item;
-      });
-      ad = obj;
 
       // 文章列表
       const article = await service[this.config.apiService].article.detail(id);
@@ -225,12 +227,21 @@ class HomeController extends Controller {
       // 栏目id
       const cid = article.cid || '';
       if (!cid) {
-        console.log('no fund cid', id, article);
+        console.log(`article_id${id}_article_${article}`);
         ctx.redirect('/');
+        return;
       }
 
       article.createdAt = dayjs(article.createdAt).format('YYYY-MM-DD HH:mm:ss');
       article.updatedAt = dayjs(article.updatedAt).format('YYYY-MM-DD HH:mm:ss');
+
+      // 广告
+      let ad = await service[this.config.template].home.ad(1, 3);
+      const obj = {};
+      ad.forEach(item => {
+        obj[item.mark] = item;
+      });
+      ad = obj;
 
 
       // 当前栏目和当前栏目下所有子导航
