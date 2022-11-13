@@ -13,9 +13,13 @@ class AdService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.insert(`${this.model}`, body);
+    try {
+      const result = await app.mysql.insert(`${this.model}`, body);
     const affectedRows = result.affectedRows;
     return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // 删
@@ -64,6 +68,7 @@ class AdService extends BaseService {
     const {
       app,
     } = this;
+   try {
     const result = await app.mysql.update(`${this.model}`, {
       id,
       title,
@@ -82,6 +87,9 @@ class AdService extends BaseService {
     });
     const affectedRows = result.affectedRows;
     return affectedRows > 0 ? 'success' : 'fail';
+   } catch (error) {
+    console.error(error)
+   }
   }
 
   // 文章列表
@@ -124,11 +132,15 @@ class AdService extends BaseService {
       ctx,
       app,
     } = this;
-    const id = ctx.query.id;
+    try {
+      const id = ctx.query.id;
     const data = await app.mysql.get(`${this.model}`, {
       id,
     });
     return data;
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // 搜索

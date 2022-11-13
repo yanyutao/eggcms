@@ -17,15 +17,20 @@ class FriendlinkService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.insert(`${this.model}`, {
-      title,
-      link,
-      sort,
-      createdAt,
-    });
-
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.insert(`${this.model}`, {
+        title,
+        link,
+        sort,
+        createdAt,
+      });
+  
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 删
@@ -33,11 +38,16 @@ class FriendlinkService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.delete(`${this.model}`, {
-      id,
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.delete(`${this.model}`, {
+        id,
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
 
@@ -52,18 +62,23 @@ class FriendlinkService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.update(`${this.model}`, {
-      title,
-      link,
-      sort,
-      createdAt,
-    }, {
-      where: {
-        id,
-      },
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.update(`${this.model}`, {
+        title,
+        link,
+        sort,
+        createdAt,
+      }, {
+        where: {
+          id,
+        },
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
 
@@ -96,8 +111,9 @@ class FriendlinkService extends BaseService {
       };
     } catch (err) {
       // error, rollback
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(err);
+
+      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
     }
   }
 
@@ -108,11 +124,16 @@ class FriendlinkService extends BaseService {
       ctx,
       app,
     } = this;
-    const id = ctx.query.id;
-    const data = await app.mysql.get(`${this.model}`, {
-      id,
-    });
-    return data;
+    try {
+    
+      const id = ctx.query.id;
+      const data = await app.mysql.get(`${this.model}`, {
+        id,
+      });
+      return data;
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 搜索

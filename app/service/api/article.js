@@ -384,26 +384,39 @@ class ArticleService extends BaseService {
   // 增加计数器
   async count(id) {
     const { app } = this;
+   try {
     const sql = `UPDATE article SET pv=pv+1 WHERE id=${id} LIMIT 1`;
     const result = await app.mysql.query(sql);
     const affectedRows = result.affectedRows;
     return affectedRows > 0 ? 'success' : 'fail';
+   } catch (error) {
+    console.error(error)
+   }
   }
 
   // 上一篇文章
   async pre(id, cid) {
+   try {
     const { app } = this;
     const sql = `SELECT a.id,a.title,c.name,c.path FROM article a LEFT JOIN category c ON a.cid=c.id  WHERE a.id<${id} AND a.cid=${cid} ORDER BY id DESC LIMIT 1`;
     const result = await app.mysql.query(sql);
     return result[0];
+   } catch (error) {
+    console.error(error)
+   }
   }
 
   // 下一篇文章
   async next(id, cid) {
     const { app } = this;
-    const sql = `SELECT a.id,a.title,c.name,c.path FROM article a LEFT JOIN category c ON a.cid=c.id WHERE a.id>${id} AND a.cid=${cid} LIMIT 1`;
-    const result = await app.mysql.query(sql);
-    return result[0];
+    try {
+    
+      const sql = `SELECT a.id,a.title,c.name,c.path FROM article a LEFT JOIN category c ON a.cid=c.id WHERE a.id>${id} AND a.cid=${cid} LIMIT 1`;
+      const result = await app.mysql.query(sql);
+      return result[0];
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 通过栏目id获取mid，通过mid获取模型对应字段
@@ -481,6 +494,7 @@ class ArticleService extends BaseService {
         message: message[0].count,
       };
     } catch (error) {
+      console.error(error);
       await conn.rollback(); // 一定记得捕获异常后回滚事务！！
     }
   }

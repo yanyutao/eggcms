@@ -110,29 +110,39 @@ class FieldService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.update(`${this.model}`, {
-      model_id,
-      field_cname,
-      field_ename,
-      field_type,
-      field_values,
-      field_default,
-      field_sort,
-    }, {
-      where: {
-        id,
-      },
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.update(`${this.model}`, {
+        model_id,
+        field_cname,
+        field_ename,
+        field_type,
+        field_values,
+        field_default,
+        field_sort,
+      }, {
+        where: {
+          id,
+        },
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 查询是否存在重复字段名
 
   async findByName(field_cname, field_ename) {
     const { app } = this;
-    const result = await app.mysql.query('SELECT field_cname,field_ename from field WHERE field_cname=? or field_ename=? LIMIT 0,1', [ field_cname, field_ename ]);
-    return result;
+    try {
+    
+      const result = await app.mysql.query('SELECT field_cname,field_ename from field WHERE field_cname=? or field_ename=? LIMIT 0,1', [ field_cname, field_ename ]);
+      return result;
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 文章列表
@@ -181,11 +191,16 @@ class FieldService extends BaseService {
       ctx,
       app,
     } = this;
-    const ids = id ? id : ctx.query.id;
-    const data = await app.mysql.get(`${this.model}`, {
-      id: ids,
-    });
-    return data;
+    try {
+    
+      const ids = id ? id : ctx.query.id;
+      const data = await app.mysql.get(`${this.model}`, {
+        id: ids,
+      });
+      return data;
+    } catch (error) {
+     console.error(error)
+    }
   }
 
 

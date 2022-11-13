@@ -10,7 +10,6 @@
             "ignore_watch": [  
                 "app/public"
             ],
-            
             "log_date_format": "YYYY-MM-DD HH:mm:ss",
             "error_file": "./logs/pm2-err.log",
             "out_file": "./logs/pm2-out.log",
@@ -18,15 +17,19 @@
             "exec_mode": "fork",
             "min_uptime":"60s",
             "max_restarts": 30, 
-            "max_memory_restart": "80M",
+            "max_memory_restart": "100M",
             "restart_delay": 3000,
             "autorestart": true,
             "node_args": [],
             "args": [],
             "env": {
-                "EGG_SERVER_ENV": "dev",
+                "EGG_SERVER_ENV": "prod",
                 "NODE_ENV": "prod"
-            }   
+            },
+            "instances": 1,
+            "watch_delay": 1000,
+            "stop_exit_codes": [0],
+            "exp_backoff_restart_delay": 2000
         }
     ]
 }

@@ -34,22 +34,27 @@ class PageService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.insert(`${this.model}`, {
-      cid,
-      title,
-      seo_title,
-      seo_keywords,
-      seo_description,
-      source,
-      author,
-      content,
-      status,
-      pv,
-      createdAt,
-    });
-
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.insert(`${this.model}`, {
+        cid,
+        title,
+        seo_title,
+        seo_keywords,
+        seo_description,
+        source,
+        author,
+        content,
+        status,
+        pv,
+        createdAt,
+      });
+  
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 删
@@ -113,25 +118,30 @@ class PageService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.update(`${this.model}`, {
-      cid,
-      title,
-      seo_title,
-      seo_keywords,
-      seo_description,
-      source,
-      author,
-      content,
-      status,
-      pv,
-      updatedAt,
-    }, {
-      where: {
-        id,
-      },
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.update(`${this.model}`, {
+        cid,
+        title,
+        seo_title,
+        seo_keywords,
+        seo_description,
+        source,
+        author,
+        content,
+        status,
+        pv,
+        updatedAt,
+      }, {
+        where: {
+          id,
+        },
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
 
@@ -163,9 +173,10 @@ class PageService extends BaseService {
         list,
       };
     } catch (err) {
+      console.error(err);
+
       // error, rollback
       await conn.rollback(); // 一定记得捕获异常后回滚事务！！
-      console.error(err);
     }
   }
 
@@ -176,11 +187,16 @@ class PageService extends BaseService {
       ctx,
       app,
     } = this;
-    const id = ctx.query.id;
-    const data = await app.mysql.get(`${this.model}`, {
-      id,
-    });
-    return data;
+    try {
+    
+      const id = ctx.query.id;
+      const data = await app.mysql.get(`${this.model}`, {
+        id,
+      });
+      return data;
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 文章内容
@@ -189,20 +205,29 @@ class PageService extends BaseService {
       ctx,
       app,
     } = this;
-
-    const sql = 'SELECT * FROM page WHERE cid=? ORDER BY id LIMIT 1';
-    const data = await this.app.mysql.query(sql, [ cid ]);
-    return data[0];
+    try {
+    
+      const sql = 'SELECT * FROM page WHERE cid=? ORDER BY id LIMIT 1';
+      const data = await this.app.mysql.query(sql, [ cid ]);
+      return data[0];
+    } catch (error) {
+     console.error(error)
+    }
   }
 
 
   // 增加计数器
   async count(id) {
     const { app } = this;
-    const sql = `UPDATE page SET pv=pv+1 WHERE id=${id} LIMIT 1`;
-    const result = await app.mysql.query(sql);
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const sql = `UPDATE page SET pv=pv+1 WHERE id=${id} LIMIT 1`;
+      const result = await app.mysql.query(sql);
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 搜索

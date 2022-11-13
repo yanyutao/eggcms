@@ -15,13 +15,18 @@ class ArticleMapTagService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.insert(`${this.model}`, {
-      aid,
-      tid,
-    });
-
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+      const result = await app.mysql.insert(`${this.model}`, {
+        aid,
+        tid,
+      });
+  
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
+   
   }
 
   // 删
@@ -29,11 +34,16 @@ class ArticleMapTagService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.delete(`${this.model}`, {
-      id,
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.delete(`${this.model}`, {
+        id,
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
 
@@ -46,6 +56,7 @@ class ArticleMapTagService extends BaseService {
     const {
       app,
     } = this;
+   try {
     const result = await app.mysql.update(`${this.model}`, {
       id,
       aid,
@@ -57,6 +68,9 @@ class ArticleMapTagService extends BaseService {
     });
     const affectedRows = result.affectedRows;
     return affectedRows > 0 ? 'success' : 'fail';
+   } catch (error) {
+    console.error(error)
+   }
   }
 
 
@@ -101,11 +115,16 @@ class ArticleMapTagService extends BaseService {
       ctx,
       app,
     } = this;
-    const id = ctx.query.id;
-    const data = await app.mysql.get(`${this.model}`, {
-      id,
-    });
-    return data;
+    try {
+      const id = ctx.query.id;
+      const data = await app.mysql.get(`${this.model}`, {
+        id,
+      });
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+   
   }
 
   // 搜索

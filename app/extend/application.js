@@ -17,7 +17,7 @@ module.exports = {
         if (error.name === 'TokenExpiredError') {
           return 'TokenExpiredError';
         }
-		console.error(error);
+        console.error(error);
         return false;
       }
       return decode;

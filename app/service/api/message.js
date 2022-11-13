@@ -18,16 +18,21 @@ class MessageService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.insert(`${this.model}`, {
-      name,
-      tel,
-      wx,
-      content,
-      createdAt,
-    });
-
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.insert(`${this.model}`, {
+        name,
+        tel,
+        wx,
+        content,
+        createdAt,
+      });
+  
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
   // 删
@@ -35,11 +40,16 @@ class MessageService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.delete(`${this.model}`, {
-      id,
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+    
+      const result = await app.mysql.delete(`${this.model}`, {
+        id,
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
 
@@ -55,20 +65,26 @@ class MessageService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.update(`${this.model}`, {
-      id,
-      name,
-      tel,
-      wx,
-      content,
-      createdAt,
-    }, {
-      where: {
+
+    try {
+    
+      const result = await app.mysql.update(`${this.model}`, {
         id,
-      },
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+        name,
+        tel,
+        wx,
+        content,
+        createdAt,
+      }, {
+        where: {
+          id,
+        },
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
   }
 
 
@@ -101,8 +117,9 @@ class MessageService extends BaseService {
       };
     } catch (err) {
       // error, rollback
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(err);
+
+      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
     }
   }
 
@@ -148,9 +165,9 @@ class MessageService extends BaseService {
         list,
       };
     } catch (err) {
+      console.error(err);
       // 异常后回滚
       await conn.rollback();
-      console.error(err);
     }
 
   }

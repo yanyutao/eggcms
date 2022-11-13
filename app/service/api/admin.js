@@ -10,16 +10,24 @@ class AdminService extends BaseService {
   // 登录
   async find(username, password) {
     const { app } = this;
+  try {
     const result = await app.mysql.get(`${this.model}`, { username, password });
     return result;
+  } catch (error) {
+    console.error(error)
+  }
   }
 
   // 增加
   async create(body) {
     const { app } = this;
+   try {
     const result = await app.mysql.insert(`${this.model}`, { ...body });
     const affectedRows = result.affectedRows;
     return affectedRows > 0 ? 'success' : 'fail';
+   } catch (error) {
+    console.error(error)
+   }
   }
 
   // 删
@@ -27,11 +35,16 @@ class AdminService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.delete(`${this.model}`, {
-      id,
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+      const result = await app.mysql.delete(`${this.model}`, {
+        id,
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
+   
   }
 
   // 修改
@@ -45,18 +58,23 @@ class AdminService extends BaseService {
     const {
       app,
     } = this;
-    const result = await app.mysql.update(`${this.model}`, {
-      password,
-      createdAt,
-      updatedAt,
-      status,
-    }, {
-      where: {
-        id,
-      },
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+    try {
+      const result = await app.mysql.update(`${this.model}`, {
+        password,
+        createdAt,
+        updatedAt,
+        status,
+      }, {
+        where: {
+          id,
+        },
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+     console.error(error)
+    }
+    
   }
 
   // 列表
@@ -98,12 +116,16 @@ class AdminService extends BaseService {
       ctx,
       app,
     } = this;
+   try {
     const id = ctx.query.id;
     const data = await app.mysql.select(`${this.model}`, {
       columns: [ 'id', 'username', 'createdAt', 'updatedAt', 'status' ],
       where: { id },
     });
     return data[0];
+   } catch (error) {
+    console.log(error)
+   }
   }
 
   // 搜索

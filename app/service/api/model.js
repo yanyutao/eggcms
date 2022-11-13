@@ -29,8 +29,9 @@ class ModelService extends BaseService {
         createTableStatus,
       };
     } catch (err) {
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(err);
+
+      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
     }
   }
 
@@ -48,8 +49,9 @@ class ModelService extends BaseService {
         has,
       };
     } catch (err) {
-      await conn.rollback(); // 捕获异常后回滚事务！！
       console.error(err);
+
+      await conn.rollback(); // 捕获异常后回滚事务！！
     }
   }
 
@@ -77,8 +79,9 @@ class ModelService extends BaseService {
         delTable: delTable.affectedRows === 1,
       };
     } catch (err) {
-      await conn.rollback(); // 捕获异常后回滚事务！！
       console.error(err);
+
+      await conn.rollback(); // 捕获异常后回滚事务！！
     }
 
   }
@@ -102,8 +105,8 @@ class ModelService extends BaseService {
       };
 
     } catch (err) {
-      await conn.rollback(); // 捕获异常后回滚事务！！
       console.error(err);
+      await conn.rollback(); // 捕获异常后回滚事务！！
     }
 
   }
