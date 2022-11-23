@@ -96,7 +96,14 @@ module.exports = appInfo => {
   };
 
   config.onerror = {
-    // 线上页面发生异常时，重定向到这个页面上
+    all(err, ctx) {
+      // 在此处定义针对所有响应类型的错误处理方法
+      // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
+      ctx.logger.error(err);
+      console.error(err);
+      ctx.body = 'error';
+      ctx.status = 500;
+    },
     errorPageUrl: '/500.html',
   };
 
@@ -106,7 +113,7 @@ module.exports = appInfo => {
 
   // 日志
   config.logger = {
-    level: 'NONE',
+    level: 'INFO',
   };
 
   // add your user config here

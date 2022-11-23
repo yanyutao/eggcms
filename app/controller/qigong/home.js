@@ -232,7 +232,7 @@ class HomeController extends Controller {
       // 栏目id
       const cid = article.cid || '';
       if (!cid) {
-        console.log(`article_id${id}_article_${article}`);
+        console.log(`article_id${id}_article_${JSON.stringify(article)}`);
         ctx.redirect('/');
         return;
       }

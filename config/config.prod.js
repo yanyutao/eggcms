@@ -11,12 +11,6 @@ module.exports = appInfo => {
     },
   };
 
-  // cookie sign key
-  config.keys = appInfo.name + '_1539507495248_1368';
-
-  // add your config here
-  config.middleware = [];
-
   // add mysql config
   config.mysql = {
     client: {
@@ -34,50 +28,6 @@ module.exports = appInfo => {
 
   };
 
-  config.token = {
-    KEY: 'mingkong', // JSON WEB TOKEN KEY
-    TIME: '1d', // 失效时间 10
-  };
-
-  config.md5 = {
-    key: 'eggcms', // md5 加盐
-  };
-
-  // 关闭csrf
-  config.security = {
-    csrf: {
-      enable: false,
-    },
-  };
-
-  // 配置上传
-  config.multipart = {
-    fileSize: '50mb',
-    mode: 'stream',
-    whitelist: [
-      '.jpg',
-      '.jpeg',
-      '.png',
-      '.gif',
-      '.zip',
-      '.gz',
-      '.tgz',
-      '.gzip',
-      '.mp3',
-      '.mp4',
-      '.avi',
-    ],
-    fileExtensions: [ '.pdf', '.txt' ], // 扩展几种上传的文件格式
-  };
-
-  // 模板配置
-  config.view = {
-    defaultViewEngine: 'ejs',
-    mapping: {
-      '.html': 'ejs', // 左边写成.html后缀，会自动渲染.html文件
-    },
-  };
-
   config.static = {
     prefix: '/public/',
     dynamic: true, // 如果当前访问的静态资源没有缓存，则缓存静态文件，和`preload`配合使用；
@@ -92,7 +42,7 @@ module.exports = appInfo => {
 
   // 日志
   config.logger = {
-    level: 'ERROR',
+    level: 'INFO',
   };
 
   return config;

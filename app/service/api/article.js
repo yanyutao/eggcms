@@ -305,10 +305,13 @@ class ArticleService extends BaseService {
         id,
       });
 
-
-      if (!data?.cid) {
+      //兼容mysql错误
+      if (!data.cid) {
+        console.log(`id->${id} data->${JSON.stringify(data)}`)
+        await conn.commit(); // 提交事务
         return { ...data, field: {} };
       }
+
       // 通过栏目id查找模型id
       const modIdStr = `SELECT mid FROM category WHERE id=${data.cid} LIMIT 0,1`;
       const modId = await conn.query(modIdStr);
@@ -324,8 +327,8 @@ class ArticleService extends BaseService {
       await conn.commit(); // 提交事务
       return { ...data, field: field[0] || {} };
     } catch (error) {
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(error);
+      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
     }
 
   }
