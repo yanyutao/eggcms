@@ -20,7 +20,7 @@ class ModelService extends BaseService {
       const createTableStatus = await conn.query(sql_create);
       // 新增内容
       const sql_insert = `INSERT INTO ${this.model} (model_name,table_name,status) VALUES(?,?,?)`;
-      const result = await conn.query(sql_insert, [ model_name, table_name, status ]);
+      const result = await conn.query(sql_insert, [model_name, table_name, status]);
       const insertStatus = result.affectedRows === 1;
 
       await conn.commit(); // 提交事务
@@ -30,8 +30,8 @@ class ModelService extends BaseService {
       };
     } catch (err) {
       console.error(err);
-
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -50,8 +50,8 @@ class ModelService extends BaseService {
       };
     } catch (err) {
       console.error(err);
-
-      await conn.rollback(); // 捕获异常后回滚事务！！
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -80,8 +80,8 @@ class ModelService extends BaseService {
       };
     } catch (err) {
       console.error(err);
-
-      await conn.rollback(); // 捕获异常后回滚事务！！
+      await conn.rollback();
+      throw err;
     }
 
   }
@@ -106,7 +106,8 @@ class ModelService extends BaseService {
 
     } catch (err) {
       console.error(err);
-      await conn.rollback(); // 捕获异常后回滚事务！！
+      await conn.rollback();
+      throw err;
     }
 
   }
@@ -115,7 +116,7 @@ class ModelService extends BaseService {
   // 查询是否已存在模型名称
   async findByName(model_name, table_name) {
     const { app } = this;
-    const result = await app.mysql.query('SELECT model_name,table_name from model WHERE model_name=? or table_name=? LIMIT 0,1', [ model_name, table_name ]);
+    const result = await app.mysql.query('SELECT model_name,table_name from model WHERE model_name=? or table_name=? LIMIT 0,1', [model_name, table_name]);
     return result;
   }
 
@@ -132,9 +133,9 @@ class ModelService extends BaseService {
 
       const offset = parseInt((current - 1) * pageSize);
       const list = await conn.select(`${this.model}`, {
-        columns: [ 'id', 'model_name', 'table_name', 'status' ],
+        columns: ['id', 'model_name', 'table_name', 'status'],
         orders: [
-          [ 'id', 'desc' ],
+          ['id', 'desc'],
         ],
         offset,
         limit: parseInt(pageSize),
@@ -149,8 +150,9 @@ class ModelService extends BaseService {
         list,
       };
     } catch (err) {
-      await conn.rollback(); // 捕获异常后回滚事务！！
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 

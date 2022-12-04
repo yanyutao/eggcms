@@ -219,34 +219,35 @@ class HomeController extends Controller {
       const { app, ctx, service } = this;
 
       const id = ctx.params.id.replace('.html', '');
-
       if (!id) {
-        console.log(`article_id${id}`);
+        console.log(`no_article_id${id}`);
         ctx.redirect('/');
         return;
       }
-
       // 文章列表
       const article = await service[this.config.apiService].article.detail(id);
-
-      // 栏目id
-      const cid = article.cid || '';
-      if (!cid) {
-        console.log(`article_id${id}_article_${JSON.stringify(article)}`);
+      if (!article) {
+        console.log(`no_cid->article_id${id}_article_${JSON.stringify(article)}`);
         ctx.redirect('/');
         return;
       }
+      
+      // 栏目id
+      const cid = article.cid || '';
 
       article.createdAt = dayjs(article.createdAt).format('YYYY-MM-DD HH:mm:ss');
       article.updatedAt = dayjs(article.updatedAt).format('YYYY-MM-DD HH:mm:ss');
 
       // 广告
       let ad = await service[this.config.template].home.ad(1, 3);
-      const obj = {};
-      ad.forEach(item => {
-        obj[item.mark] = item;
-      });
-      ad = obj;
+      if(ad){
+        const obj = {};
+        ad.forEach(item => {
+          obj[item.mark] = item;
+        });
+        ad = obj;
+      }
+     
 
 
       // 当前栏目和当前栏目下所有子导航

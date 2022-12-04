@@ -20,13 +20,13 @@ class ArticleMapTagService extends BaseService {
         aid,
         tid,
       });
-  
+
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
-   
+
   }
 
   // 删
@@ -35,14 +35,14 @@ class ArticleMapTagService extends BaseService {
       app,
     } = this;
     try {
-    
+
       const result = await app.mysql.delete(`${this.model}`, {
         id,
       });
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 
@@ -56,21 +56,21 @@ class ArticleMapTagService extends BaseService {
     const {
       app,
     } = this;
-   try {
-    const result = await app.mysql.update(`${this.model}`, {
-      id,
-      aid,
-      tid,
-    }, {
-      where: {
+    try {
+      const result = await app.mysql.update(`${this.model}`, {
         id,
-      },
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
-   } catch (error) {
-    console.error(error)
-   }
+        aid,
+        tid,
+      }, {
+        where: {
+          id,
+        },
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+      console.error(error)
+    }
   }
 
 
@@ -88,7 +88,7 @@ class ArticleMapTagService extends BaseService {
       const offset = parseInt((current - 1) * pageSize);
       const list = await conn.select(`${this.model}`, {
         orders: [
-          [ 'id', 'desc' ],
+          ['id', 'desc'],
         ],
         offset,
         limit: parseInt(pageSize),
@@ -102,9 +102,9 @@ class ArticleMapTagService extends BaseService {
         list,
       };
     } catch (err) {
-      // error, rollback
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -124,7 +124,7 @@ class ArticleMapTagService extends BaseService {
     } catch (error) {
       console.error(error);
     }
-   
+
   }
 
   // 搜索
@@ -155,9 +155,9 @@ class ArticleMapTagService extends BaseService {
         list,
       };
     } catch (err) {
-      // 异常后回滚
-      await conn.rollback();
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
 
   }

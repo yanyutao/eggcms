@@ -8,7 +8,6 @@ class BaseService extends Service {
   async list(pageNum, pageSize) {
     const { app } = this;
     try {
-    
       const offset = parseInt((pageNum - 1) * pageSize);
       const result = await app.mysql.select(`${this.model}`, {
         orders: [[ 'id', 'desc' ]],
@@ -31,14 +30,12 @@ class BaseService extends Service {
     } catch (error) {
      console.error(error)
     }
-    
   }
 
   // 更新
   async update(body) {
     const { app } = this;
     try {
-    
       const result = await app.mysql.update(`${this.model}`, body);
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
@@ -51,7 +48,6 @@ class BaseService extends Service {
   async destroy(id) {
     const { app } = this;
     try {
-    
       const result = await app.mysql.delete(`${this.model}`, { id });
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';

@@ -65,9 +65,10 @@ class ArticleService extends BaseService {
       }
 
       return affectedRows > 0 ? 'success' : 'fail';
-    } catch (error) {
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -134,9 +135,10 @@ class ArticleService extends BaseService {
       const affectedRows = delArticle.affectedRows;
       await conn.commit(); // 提交事务
       return affectedRows > 0 ? 'success' : 'fail';
-    } catch (error) {
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -229,9 +231,10 @@ class ArticleService extends BaseService {
 
       await conn.commit(); // 提交事务
       return affectedRows > 0 ? 'success' : 'fail';
-    } catch (error) {
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -240,7 +243,7 @@ class ArticleService extends BaseService {
     const {
       app,
     } = this;
-    const conn = await app.mysql.beginTransaction(); // 初始化事务
+ 
     try {
       // 查询个数
       let sql;
@@ -249,34 +252,31 @@ class ArticleService extends BaseService {
       } else {
         sql = `SELECT COUNT(id) as count FROM ${this.model}`;
       }
-      const total = await conn.query(sql);
+      const total = await app.mysql.query(sql);
 
       const offset = parseInt((current - 1) * pageSize);
       let list;
       if (id) {
-        list = await conn.select(`${this.model}`, {
+        list = await app.mysql.select(`${this.model}`, {
           where: { cid: id },
-          columns: [ 'id', 'title', 'createdAt', 'description', 'pv', 'author', 'status', 'img' ],
+          columns: ['id', 'title', 'createdAt', 'description', 'pv', 'author', 'status', 'img'],
           orders: [
-            [ 'id', 'desc' ],
+            ['id', 'desc'],
           ],
           offset,
           limit: parseInt(pageSize),
         });
-
-
       } else {
-        list = await conn.select(`${this.model}`, {
-          columns: [ 'id', 'title', 'attr', 'pv', 'createdAt', 'status' ],
+        list = await app.mysql.select(`${this.model}`, {
+          columns: ['id', 'title', 'attr', 'pv', 'createdAt', 'status'],
           orders: [
-            [ 'id', 'desc' ],
+            ['id', 'desc'],
           ],
           offset,
           limit: parseInt(pageSize),
         });
       }
 
-      await conn.commit(); // 提交事务
       return {
         count: total[0].count,
         total: Math.ceil(total[0].count / pageSize),
@@ -284,8 +284,6 @@ class ArticleService extends BaseService {
         list,
       };
     } catch (err) {
-      // error, rollback
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(err);
     }
   }
@@ -296,41 +294,34 @@ class ArticleService extends BaseService {
       ctx,
       app,
     } = this;
-
-    const conn = await app.mysql.beginTransaction(); // 初始化事务
     try {
-
+      
       // 查询文章
-      const data = await conn.get(`${this.model}`, {
+      const data = await app.mysql.get(`${this.model}`, {
         id,
       });
-
+      console.log('id-->',id)
       //兼容mysql错误
-      if (!data.cid) {
+      if (!data || !data.cid) {
         console.log(`id->${id} data->${JSON.stringify(data)}`)
-        await conn.commit(); // 提交事务
-        return { ...data, field: {} };
+        return false;
       }
-
       // 通过栏目id查找模型id
       const modIdStr = `SELECT mid FROM category WHERE id=${data.cid} LIMIT 0,1`;
-      const modId = await conn.query(modIdStr);
+      const modId = await app.mysql.query(modIdStr);
       let field = [];
       if (modId.length > 0 && modId[0].mid !== '0') {
         // 通过模型查找表名
         const tableNameStr = `SELECT table_name FROM model WHERE id=${modId[0].mid} LIMIT 0,1`;
-        const tableName = await conn.query(tableNameStr);
+        const tableName = await app.mysql.query(tableNameStr);
         // 通过表名查找文章
         const fieldStr = `SELECT * FROM ${tableName[0].table_name} WHERE aid=${id} LIMIT 0,1`;
-        field = await conn.query(fieldStr);
+        field = await app.mysql.query(fieldStr);
       }
-      await conn.commit(); // 提交事务
       return { ...data, field: field[0] || {} };
-    } catch (error) {
-      console.error(error);
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+    } catch (err) {
+      console.error(err);
     }
-
   }
 
   // 搜索
@@ -339,9 +330,8 @@ class ArticleService extends BaseService {
       app,
     } = this;
     // 初始化事务
-    const conn = await app.mysql.beginTransaction();
+    
     try {
-
       // 查询个数
       let sql;
       const countSql = 'SELECT COUNT(*) as count FROM  article a LEFT JOIN category c ON a.cid=c.id';
@@ -353,7 +343,7 @@ class ArticleService extends BaseService {
       } else {
         sql = countSql + keyStr + cidStr;
       }
-      const total = await conn.query(sql);
+      const total = await app.mysql.query(sql);
 
       // 翻页
       const offset = parseInt((cur - 1) * pageSize);
@@ -365,11 +355,7 @@ class ArticleService extends BaseService {
       } else {
         sql_list = listStart + `AND c.id=${cid} ` + listEnd;
       }
-      const list = await conn.query(sql_list);
-
-      // 提交事务
-      await conn.commit();
-
+      const list = await app.mysql.query(sql_list);
       return {
         count: total[0].count,
         total: Math.ceil(total[0].count / pageSize),
@@ -377,48 +363,45 @@ class ArticleService extends BaseService {
         list,
       };
     } catch (err) {
-      // 异常后回滚
-      await conn.rollback();
       console.error(err);
     }
-
   }
 
   // 增加计数器
   async count(id) {
     const { app } = this;
-   try {
-    const sql = `UPDATE article SET pv=pv+1 WHERE id=${id} LIMIT 1`;
-    const result = await app.mysql.query(sql);
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
-   } catch (error) {
-    console.error(error)
-   }
+    try {
+      const sql = `UPDATE article SET pv=pv+1 WHERE id=${id} LIMIT 1`;
+      const result = await app.mysql.query(sql);
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // 上一篇文章
   async pre(id, cid) {
-   try {
-    const { app } = this;
-    const sql = `SELECT a.id,a.title,c.name,c.path FROM article a LEFT JOIN category c ON a.cid=c.id  WHERE a.id<${id} AND a.cid=${cid} ORDER BY id DESC LIMIT 1`;
-    const result = await app.mysql.query(sql);
-    return result[0];
-   } catch (error) {
-    console.error(error)
-   }
+    try {
+      const { app } = this;
+      const sql = `SELECT a.id,a.title,c.name,c.path FROM article a LEFT JOIN category c ON a.cid=c.id  WHERE a.id<${id} AND a.cid=${cid} ORDER BY id DESC LIMIT 1`;
+      const result = await app.mysql.query(sql);
+      return result[0];
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // 下一篇文章
   async next(id, cid) {
     const { app } = this;
     try {
-    
+
       const sql = `SELECT a.id,a.title,c.name,c.path FROM article a LEFT JOIN category c ON a.cid=c.id WHERE a.id>${id} AND a.cid=${cid} LIMIT 1`;
       const result = await app.mysql.query(sql);
       return result[0];
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 
@@ -427,66 +410,57 @@ class ArticleService extends BaseService {
     const {
       app,
     } = this;
-    const conn = await app.mysql.beginTransaction(); // 初始化事务
+    
     try {
       // 查询个数
       const mid = `SELECT mid FROM category WHERE id=${cid} AND mid IS NOT NULL`;
-      const _mid = await conn.query(mid);
+      const _mid = await app.mysql.query(mid);
       let res = [];
       if (_mid.length > 0) {
         const field = `SELECT field_cname,field_ename,field_type,field_values,field_default,field_sort FROM field WHERE model_id=${_mid[0].mid} LIMIT 0,12`;
-        res = await conn.query(field);
+        res = await app.mysql.query(field);
       }
-      await conn.commit(); // 提交事务
       return {
         fields: res,
       };
     } catch (err) {
-      // error, rollback
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(err);
     }
-
   }
 
   async tongji() {
     const {
       app,
     } = this;
-
-    const conn = await app.mysql.beginTransaction(); // 初始化事务
     try {
-
       // 昨天
       const yesterdayStr = 'select count(*) AS count from article where TO_DAYS(NOW())-TO_DAYS(updatedAt)<=1';
-      const yesterday = await conn.query(yesterdayStr);
+      const yesterday = await app.mysql.query(yesterdayStr);
 
       // 今天
       const todayStr = 'select count(*) AS count from article where TO_DAYS(NOW())=TO_DAYS(NOW())';
-      const today = await conn.query(todayStr);
+      const today = await app.mysql.query(todayStr);
 
       // 7天
       const weekStr = 'SELECT COUNT(*) AS count from article where DATE_SUB(CURDATE(),INTERVAL 7 DAY)<=DATE(updatedAt)';
-      const week = await conn.query(weekStr);
+      const week = await app.mysql.query(weekStr);
 
       // 30天
       const monthStr = 'SELECT COUNT(*) AS count from article where DATE_SUB(CURDATE(),INTERVAL 30 DAY)<=DATE(updatedAt)';
-      const month = await conn.query(monthStr);
+      const month = await app.mysql.query(monthStr);
 
       // 季度
       const quarterStr = 'SELECT COUNT(*) AS count from article where QUARTER(createdAt)=QUARTER(NOW())';
-      const quarter = await conn.query(quarterStr);
+      const quarter = await app.mysql.query(quarterStr);
 
       // 年
       const yearStr = 'SELECT COUNT(*) AS count from article where YEAR(createdAt)=YEAR(NOW())';
-      const year = await conn.query(yearStr);
+      const year = await app.mysql.query(yearStr);
 
       // 留言数
       const messageStr = 'SELECT COUNT(id) AS count FROM message LIMIT 0,1';
-      const message = await conn.query(messageStr);
+      const message = await app.mysql.query(messageStr);
 
-
-      await conn.commit(); // 提交事务
       return {
         yesterday: yesterday[0].count,
         today: today[0].count,
@@ -496,9 +470,8 @@ class ArticleService extends BaseService {
         year: year[0].count,
         message: message[0].count,
       };
-    } catch (error) {
-      console.error(error);
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+    } catch (err) {
+      console.error(err);
     }
   }
 

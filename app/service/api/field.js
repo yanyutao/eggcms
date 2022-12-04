@@ -19,7 +19,7 @@ class FieldService extends BaseService {
       const { model_id, field_cname, field_ename, field_type, field_values, field_default, field_sort } = body;
 
       // 查询模块名称
-      let table_name = await conn.query('SELECT table_name FROM model WHERE id=?', [ model_id ]);
+      let table_name = await conn.query('SELECT table_name FROM model WHERE id=?', [model_id]);
       table_name = table_name[0].table_name;
 
       const result = await app.mysql.insert(`${this.model}`, { model_id, field_cname, field_ename, field_type, field_values, field_default, field_sort });
@@ -52,8 +52,9 @@ class FieldService extends BaseService {
 
       await conn.commit(); // 提交事务
     } catch (err) {
-      await conn.rollback(); // 捕获异常后回滚事务！！
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
 
 
@@ -73,10 +74,10 @@ class FieldService extends BaseService {
     try {
 
       // 查询需要删除的字段
-      const field = await conn.query('SELECT model_id,field_ename FROM field WHERE id=?', [ id ]);
+      const field = await conn.query('SELECT model_id,field_ename FROM field WHERE id=?', [id]);
       const { field_ename, model_id } = field[0];
       // 查询模型表名
-      const table = await conn.query('SELECT table_name FROM model WHERE id=?', [ model_id ]);
+      const table = await conn.query('SELECT table_name FROM model WHERE id=?', [model_id]);
       table_name = table[0].table_name;
       // 删除数据
       const result = await app.mysql.delete(`${this.model}`, {
@@ -90,8 +91,9 @@ class FieldService extends BaseService {
       }
       await conn.commit(); // 提交事务
     } catch (err) {
-      await conn.rollback(); // 捕获异常后回滚事务！！
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -111,7 +113,7 @@ class FieldService extends BaseService {
       app,
     } = this;
     try {
-    
+
       const result = await app.mysql.update(`${this.model}`, {
         model_id,
         field_cname,
@@ -128,7 +130,7 @@ class FieldService extends BaseService {
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 
@@ -137,11 +139,11 @@ class FieldService extends BaseService {
   async findByName(field_cname, field_ename) {
     const { app } = this;
     try {
-    
-      const result = await app.mysql.query('SELECT field_cname,field_ename from field WHERE field_cname=? or field_ename=? LIMIT 0,1', [ field_cname, field_ename ]);
+
+      const result = await app.mysql.query('SELECT field_cname,field_ename from field WHERE field_cname=? or field_ename=? LIMIT 0,1', [field_cname, field_ename]);
       return result;
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 
@@ -159,16 +161,16 @@ class FieldService extends BaseService {
       const offset = parseInt((current - 1) * pageSize);
       const list = await conn.select(`${this.model}`, {
         where: { model_id },
-        columns: [ 'id', 'field_cname', 'field_ename', 'field_sort' ],
+        columns: ['id', 'field_cname', 'field_ename', 'field_sort'],
         orders: [
-          [ 'id', 'desc' ],
+          ['id', 'desc'],
         ],
         offset,
         limit: parseInt(pageSize),
       });
 
       // 查询模块名称
-      const model = await conn.query('SELECT model_name,table_name FROM model WHERE id=?', [ model_id ]);
+      const model = await conn.query('SELECT model_name,table_name FROM model WHERE id=?', [model_id]);
 
       await conn.commit(); // 提交事务
 
@@ -180,8 +182,9 @@ class FieldService extends BaseService {
         list,
       };
     } catch (err) {
-      await conn.rollback(); // 捕获异常后回滚事务！！
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -192,14 +195,14 @@ class FieldService extends BaseService {
       app,
     } = this;
     try {
-    
+
       const ids = id ? id : ctx.query.id;
       const data = await app.mysql.get(`${this.model}`, {
         id: ids,
       });
       return data;
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 

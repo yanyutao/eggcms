@@ -116,10 +116,9 @@ class MessageService extends BaseService {
         list,
       };
     } catch (err) {
-      // error, rollback
       console.error(err);
-
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+       await conn.rollback(); 
+throw err; 
     }
   }
 
@@ -166,8 +165,8 @@ class MessageService extends BaseService {
       };
     } catch (err) {
       console.error(err);
-      // 异常后回滚
-      await conn.rollback();
+       await conn.rollback(); 
+throw err; 
     }
 
   }

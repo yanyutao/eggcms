@@ -15,8 +15,8 @@ class AdService extends BaseService {
     } = this;
     try {
       const result = await app.mysql.insert(`${this.model}`, body);
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
       console.error(error)
     }
@@ -44,10 +44,10 @@ class AdService extends BaseService {
       const affectedRows = delAd.affectedRows;
       await conn.commit(); // 提交事务
       return affectedRows > 0 ? 'success' : 'fail';
-    } catch (error) {
-
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
-	  console.error(error);
+    } catch (err) {
+      console.error(err);
+      await conn.rollback();
+      throw err;
     }
 
   }
@@ -68,28 +68,28 @@ class AdService extends BaseService {
     const {
       app,
     } = this;
-   try {
-    const result = await app.mysql.update(`${this.model}`, {
-      id,
-      title,
-      mark,
-      imgUrl,
-      link,
-      platform,
-      position,
-      status,
-      createdAt,
-      updatedAt,
-    }, {
-      where: {
+    try {
+      const result = await app.mysql.update(`${this.model}`, {
         id,
-      },
-    });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
-   } catch (error) {
-    console.error(error)
-   }
+        title,
+        mark,
+        imgUrl,
+        link,
+        platform,
+        position,
+        status,
+        createdAt,
+        updatedAt,
+      }, {
+        where: {
+          id,
+        },
+      });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // 文章列表
@@ -106,7 +106,7 @@ class AdService extends BaseService {
       const offset = parseInt((current - 1) * pageSize);
       const list = await conn.select(`${this.model}`, {
         orders: [
-          [ 'id', 'desc' ],
+          ['id', 'desc'],
         ],
         offset,
         limit: parseInt(pageSize),
@@ -120,9 +120,9 @@ class AdService extends BaseService {
         list,
       };
     } catch (err) {
-      // error, rollback
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -134,10 +134,10 @@ class AdService extends BaseService {
     } = this;
     try {
       const id = ctx.query.id;
-    const data = await app.mysql.get(`${this.model}`, {
-      id,
-    });
-    return data;
+      const data = await app.mysql.get(`${this.model}`, {
+        id,
+      });
+      return data;
     } catch (error) {
       console.error(error)
     }
@@ -171,9 +171,9 @@ class AdService extends BaseService {
         list,
       };
     } catch (err) {
-      // 异常后回滚
-      await conn.rollback();
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
 
   }

@@ -10,24 +10,24 @@ class AdminService extends BaseService {
   // 登录
   async find(username, password) {
     const { app } = this;
-  try {
-    const result = await app.mysql.get(`${this.model}`, { username, password });
-    return result;
-  } catch (error) {
-    console.error(error)
-  }
+    try {
+      const result = await app.mysql.get(`${this.model}`, { username, password });
+      return result;
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // 增加
   async create(body) {
     const { app } = this;
-   try {
-    const result = await app.mysql.insert(`${this.model}`, { ...body });
-    const affectedRows = result.affectedRows;
-    return affectedRows > 0 ? 'success' : 'fail';
-   } catch (error) {
-    console.error(error)
-   }
+    try {
+      const result = await app.mysql.insert(`${this.model}`, { ...body });
+      const affectedRows = result.affectedRows;
+      return affectedRows > 0 ? 'success' : 'fail';
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // 删
@@ -42,9 +42,9 @@ class AdminService extends BaseService {
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
-   
+
   }
 
   // 修改
@@ -72,9 +72,9 @@ class AdminService extends BaseService {
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
-    
+
   }
 
   // 列表
@@ -90,7 +90,7 @@ class AdminService extends BaseService {
       const offset = parseInt((current - 1) * pageSize);
       const list = await conn.select(`${this.model}`, {
         orders: [
-          [ 'id', 'desc' ],
+          ['id', 'desc'],
         ],
         offset,
         limit: parseInt(pageSize),
@@ -104,8 +104,9 @@ class AdminService extends BaseService {
         list,
       };
     } catch (err) {
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -116,16 +117,16 @@ class AdminService extends BaseService {
       ctx,
       app,
     } = this;
-   try {
-    const id = ctx.query.id;
-    const data = await app.mysql.select(`${this.model}`, {
-      columns: [ 'id', 'username', 'createdAt', 'updatedAt', 'status' ],
-      where: { id },
-    });
-    return data[0];
-   } catch (error) {
-    console.log(error)
-   }
+    try {
+      const id = ctx.query.id;
+      const data = await app.mysql.select(`${this.model}`, {
+        columns: ['id', 'username', 'createdAt', 'updatedAt', 'status'],
+        where: { id },
+      });
+      return data[0];
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // 搜索
@@ -156,11 +157,10 @@ class AdminService extends BaseService {
         list,
       };
     } catch (err) {
-      // 异常后回滚
-      await conn.rollback();
       console.error(err);
+      await conn.rollback();
+      throw err;
     }
-
   }
 
 

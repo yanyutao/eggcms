@@ -18,18 +18,18 @@ class FragService extends BaseService {
       app,
     } = this;
     try {
-    
+
       const result = await app.mysql.insert(`${this.model}`, {
         name,
         mark,
         createdAt,
         content,
       });
-  
+
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 
@@ -39,14 +39,14 @@ class FragService extends BaseService {
       app,
     } = this;
     try {
-    
+
       const result = await app.mysql.delete(`${this.model}`, {
         id,
       });
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 
@@ -63,7 +63,7 @@ class FragService extends BaseService {
       app,
     } = this;
     try {
-    
+
       const result = await app.mysql.update(`${this.model}`, {
         id,
         content,
@@ -78,7 +78,7 @@ class FragService extends BaseService {
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 
@@ -97,7 +97,7 @@ class FragService extends BaseService {
       const offset = parseInt((current - 1) * pageSize);
       const list = await conn.select(`${this.model}`, {
         orders: [
-          [ 'id', 'desc' ],
+          ['id', 'desc'],
         ],
         offset,
         limit: parseInt(pageSize),
@@ -111,10 +111,9 @@ class FragService extends BaseService {
         list,
       };
     } catch (err) {
-      // error, rollback
       console.error(err);
-
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -126,14 +125,14 @@ class FragService extends BaseService {
       app,
     } = this;
     try {
-    
+
       const id = ctx.query.id;
       const data = await app.mysql.get(`${this.model}`, {
         id,
       });
       return data;
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   }
 
@@ -165,10 +164,9 @@ class FragService extends BaseService {
         list,
       };
     } catch (err) {
-      // 异常后回滚
       console.error(err);
-
       await conn.rollback();
+      throw err;
     }
 
   }

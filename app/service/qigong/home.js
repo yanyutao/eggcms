@@ -22,9 +22,8 @@ class HomeService extends BaseService {
       return nav;
     } catch (err) {
       console.error(err);
-      // 异常后回滚
       await conn.rollback();
-
+      throw err;
     }
 
   }
@@ -44,9 +43,8 @@ class HomeService extends BaseService {
       return ad;
     } catch (err) {
       console.error(`platform-> ${platform} position->${position}`, err);
-      // 异常后回滚
       await conn.rollback();
-
+      throw err;
     }
 
   }
@@ -83,9 +81,8 @@ class HomeService extends BaseService {
       return { list: result };
     } catch (err) {
       console.error(`id->${id} attr-> ${attr} len->${len}`, err);
-      // 异常后回滚
       await conn.rollback();
-
+      throw err;
     }
   }
 
@@ -111,9 +108,8 @@ class HomeService extends BaseService {
       return { list: result };
     } catch (err) {
       console.error(`attr-> ${attr} start->${start} len->${len}`, err);
-      // 异常后回滚
       await conn.rollback();
-
+      throw err;
     }
   }
 
@@ -149,7 +145,7 @@ class HomeService extends BaseService {
   //     return { list: result };
   //   } catch (err) {
   //     // 异常后回滚
-  //     await conn.rollback();
+  //      await conn.rollback(); 
   //     console.error(err);
   //   }
   // }
@@ -185,11 +181,12 @@ class HomeService extends BaseService {
       console.error(`id->${id} len->${len}`, err);
       // 异常后回滚
       await conn.rollback();
+      throw err;
     }
   }
 
 
-  // 指定栏目或全局 图文排行榜
+  // 指定栏目或全局 图文排行榜 ?没测过
   async getArticleImgList(id = '', len = 10) {
     const {
       app,
@@ -197,13 +194,20 @@ class HomeService extends BaseService {
     // 初始化事务
     const conn = await app.mysql.beginTransaction();
     try {
-
       // 获取所有id
       const res = await conn.query('SELECT id FROM category WHERE pid=?', [id]);
+      if (!res) {
+        console.log(`getArticleImgList-id->${id}-len->${len}`)
+        return { list: [] };
+      }
+
       let ids = [id];
-      res.forEach(item => {
-        ids.push(item.id);
-      });
+      if (res) {
+        res.forEach(item => {
+          item.id && ids.push(item.id);
+        });
+      }
+
       ids = ids.join(',');
 
       let sql,
@@ -223,6 +227,7 @@ class HomeService extends BaseService {
       console.error(`id->${id} len->${len}`, err);
       // 异常后回滚
       await conn.rollback();
+      throw err;
 
     }
   }
@@ -236,9 +241,7 @@ class HomeService extends BaseService {
     const conn = await app.mysql.beginTransaction();
     try {
       let ids = [];
-
       const start = parseInt((current - 1) * pageSize);
-
       // 获取所有id
       if (id) {
         const res = await conn.query('SELECT id FROM category WHERE pid=?', [id]);
@@ -270,16 +273,13 @@ class HomeService extends BaseService {
         current: +current,
         list: result,
       };
-
     } catch (err) {
       console.error(`id->${id} current->${current} pageSize->${pageSize}`, err);
       // 异常后回滚
       await conn.rollback();
-
+      throw err;
     }
   }
-
 }
-
 
 module.exports = HomeService;

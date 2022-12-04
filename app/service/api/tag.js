@@ -52,7 +52,8 @@ class TagService extends BaseService {
       return res.affectedRows > 0 ? 'success' : 'fail';
     } catch (err) {
       console.error(err);
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -67,7 +68,7 @@ class TagService extends BaseService {
     } = this;
 
     try {
-    
+
       const result = await app.mysql.update(`${this.model}`, {
         id,
         name,
@@ -80,7 +81,7 @@ class TagService extends BaseService {
       const affectedRows = result.affectedRows;
       return affectedRows > 0 ? 'success' : 'fail';
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
 
   }
@@ -100,7 +101,7 @@ class TagService extends BaseService {
       const offset = parseInt((current - 1) * pageSize);
       const list = await conn.select(`${this.model}`, {
         orders: [
-          [ 'id', 'desc' ],
+          ['id', 'desc'],
         ],
         offset,
         limit: parseInt(pageSize),
@@ -114,9 +115,9 @@ class TagService extends BaseService {
         list,
       };
     } catch (err) {
-      // error, rollback
       console.error(err);
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+      await conn.rollback();
+      throw err;
     }
   }
 
@@ -162,10 +163,9 @@ class TagService extends BaseService {
         list,
       };
     } catch (err) {
-      // 异常后回滚
       console.error(err);
-
       await conn.rollback();
+      throw err;
     }
 
   }

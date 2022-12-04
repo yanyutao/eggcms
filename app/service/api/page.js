@@ -92,9 +92,10 @@ class PageService extends BaseService {
       const affectedRows = delPage.affectedRows;
       await conn.commit(); // 提交事务
       return affectedRows > 0 ? 'success' : 'fail';
-    } catch (error) {
-      console.error(error);
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+    } catch (err) {
+      console.error(err);
+       await conn.rollback(); 
+throw err; 
     }
 
   }
@@ -174,9 +175,8 @@ class PageService extends BaseService {
       };
     } catch (err) {
       console.error(err);
-
-      // error, rollback
-      await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+       await conn.rollback(); 
+throw err; 
     }
   }
 
@@ -258,9 +258,9 @@ class PageService extends BaseService {
         list,
       };
     } catch (err) {
-      // 异常后回滚
-      await conn.rollback();
       console.error(err);
+       await conn.rollback(); 
+throw err; 
     }
 
   }
